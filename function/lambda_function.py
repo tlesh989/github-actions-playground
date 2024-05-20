@@ -1,5 +1,4 @@
-from github import Github
-
+# Description: Lambda function to return a greeting response
 def lambda_handler(event, context):
     """Lambda function wrapper
     Args:
