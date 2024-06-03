@@ -20,6 +20,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'pnpm'
+      - name: quick check
+        run: |
+          pwd
+          ls -la
+          apt-get install -y tree && tree
+          which pnpm eslint tsc
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       - name: eslint
         run: pnpm lint
   build:
