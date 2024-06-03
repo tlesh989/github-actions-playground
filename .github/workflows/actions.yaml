@@ -11,8 +11,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Set up Node.js environment
+      - name: Setup Node.js environment
         uses: actions/setup-node@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
       - name: eslint
         run: pnpm lint
   build:
@@ -23,6 +25,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-node@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
       - name: Build
         run: pnpm build
 
@@ -41,6 +45,8 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
+      # - name: Setup pnpm
+      #   uses: pnpm/action-setup@v4
 
       - name: Check Version
         id: check-version
