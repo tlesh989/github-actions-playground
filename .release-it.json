@@ -1,0 +1,23 @@
+{
+  "non-interactive": true,
+  "plugins": {
+    "release-it-pnpm": {}
+  },
+  "git": {
+      "requireCleanWorkingDir": false,
+      "requireUpstream": false,
+      "commit": true,
+      "tag": true,
+      "push": true,
+      "pushArgs": ["--no-verify"],
+      "commitMessage": "[CI] Updated to ${version} [ci skip]",
+      "tagName": "v${version}",
+      "tagAnnotation": "Release ${version}"
+  },
+  "npm": {
+      "publish": false
+  },
+  "github": {
+      "release": true
+  }
+}
