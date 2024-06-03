@@ -72,7 +72,7 @@ jobs:
         id: check-version
         uses: issue-ops/semver@v1.2.0
         with:
-          check-only: true
+          overwrite: true
           manifest-path: package.json
 
       - name: Print version

@@ -25,4 +25,4 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Run release-it
-        run: release-it --ci
+        run: pnpm release
