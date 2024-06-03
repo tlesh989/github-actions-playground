@@ -1,4 +1,4 @@
-name: Deploy Lamba Function
+name: Deploy TypeScript App
 
 on:
   push:
@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Set up Python environment
-        uses: actions/setup-python@v4
-      - name: flake8 Lint
-        uses: py-actions/flake8@v2
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v4
+      - name: eslint
+        run: pnpm lint
   build:
     runs-on: ubuntu-latest
     needs: lint
@@ -22,50 +22,42 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-      - name: Install requirements
-        run: |
-          cd function
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Create archive
-        run: |
-          cd function
-          zip -r ../${{ github.sha }}.zip .
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: zipped-archive
-          path: ${{ github.sha }}.zip
+        uses: actions/setup-node@v4
+      - name: Build
+        run: pnpm build
 
-  publish:
-    permissions: write-all
+  check-version:
+    name: Version Check
     runs-on: ubuntu-latest
     needs: build
+
+    if: ${{ github.actor != 'dependabot[bot]' }}
+
     steps:
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # The fetch-depth and fetch-tags options are required
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
         with:
-          tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
-          body: Release ${{ github.sha }}.
-          draft: false
-          prerelease: false
-      - name: Download artifact
-        uses: actions/download-artifact@v4
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Check Version
+        id: check-version
+        uses: issue-ops/semver@v1.2.0
         with:
-          name: zipped-archive
-      - name: Upload release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ github.sha }}.zip
-          asset_name: ${{ github.sha }}.zip
-          asset_content_type: application/zip
+          check-only: true
+          manifest-path: ${{ env.MANIFEST_PATH }}
+
+      - name: Print version
+        run: echo ${{ steps.check-version.outputs.version }}
+
+  # publish:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   steps:
+  #     - name: Publish release
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         GITHUB_REPOSITORY: ${{ github.repository }}
+  #       run: gh release edit "v${{ steps.version.outputs.version }}" --draft=false
