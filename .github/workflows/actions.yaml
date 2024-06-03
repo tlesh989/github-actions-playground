@@ -24,7 +24,7 @@ jobs:
         run: |
           pwd
           ls -la
-          apt-get install -y tree && tree
+          sudo apt-get install -y tree && tree
           which pnpm eslint tsc
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
