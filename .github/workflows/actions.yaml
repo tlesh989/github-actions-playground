@@ -61,7 +61,7 @@ jobs:
         uses: issue-ops/semver@v1.2.0
         with:
           check-only: true
-          manifest-path: ${{ env.MANIFEST_PATH }}
+          manifest-path: package.json
 
       - name: Print version
         run: echo ${{ steps.check-version.outputs.version }}
