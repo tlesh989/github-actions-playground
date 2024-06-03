@@ -25,7 +25,6 @@ jobs:
           pwd
           ls -la
           tree
-          which pnpm eslint tsc
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: eslint
