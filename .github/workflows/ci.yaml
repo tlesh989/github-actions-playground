@@ -48,35 +48,35 @@ jobs:
       - name: Build
         run: pnpm build && tree
 
-  check-version:
-    name: Version Check
-    runs-on: ubuntu-latest
-    needs: build
+  # check-version:
+  #   name: Version Check
+  #   runs-on: ubuntu-latest
+  #   needs: build
 
-    if: ${{ github.actor != 'dependabot[bot]' }}
+  #   if: ${{ github.actor != 'dependabot[bot]' }}
 
-    steps:
-      # The fetch-depth and fetch-tags options are required
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-      # - name: Setup pnpm
-      #   uses: pnpm/action-setup@v4
-          # with:
-          #   version: 9
+  #   steps:
+  #     # The fetch-depth and fetch-tags options are required
+  #     - name: Checkout
+  #       id: checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #         fetch-tags: true
+  #     # - name: Setup pnpm
+  #     #   uses: pnpm/action-setup@v4
+  #         # with:
+  #         #   version: 9
 
-      - name: Check Version
-        id: check-version
-        uses: issue-ops/semver@v1.2.0
-        with:
-          overwrite: true
-          manifest-path: package.json
+  #     - name: Check Version
+  #       id: check-version
+  #       uses: issue-ops/semver@v1.2.0
+  #       with:
+  #         overwrite: true
+  #         manifest-path: package.json
 
-      - name: Print version
-        run: echo ${{ steps.check-version.outputs.version }}
+  #     - name: Print version
+  #       run: echo ${{ steps.check-version.outputs.version }}
 
   # publish:
   #   runs-on: ubuntu-latest
