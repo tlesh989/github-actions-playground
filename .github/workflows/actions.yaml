@@ -11,15 +11,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          cache: 'pnpm'
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
           run_install: true
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
       - name: eslint
         run: pnpm lint
   build:
