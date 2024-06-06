@@ -41,5 +41,6 @@ jobs:
         id: extract-version
         with:
           manifest-path: package.json
+          overwrite: true
       - name: Print version
         run: echo ${{ steps.extract-version.outputs.version }}
