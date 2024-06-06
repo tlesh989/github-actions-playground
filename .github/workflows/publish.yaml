@@ -38,7 +38,9 @@ jobs:
       - name: Bump version
         run: |
             grep "version" package.json
+            git tag -l
             pnpm version patch -m "[ci skip] Automated version bump to %s"
+            git tag -l
       - name: Extract version
         uses: issue-ops/semver@v1.2.0
         id: extract-version
