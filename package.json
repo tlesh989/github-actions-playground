@@ -7,7 +7,7 @@
     "prepare": "husky",
     "test": "jest",
     "lint": "eslint .",
-    "build": "tsc",
+    "build": "tsc --noEmit",
     "release": "release-it --ci"
   },
   "lint-staged": {
