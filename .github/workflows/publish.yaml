@@ -39,8 +39,10 @@ jobs:
         run: |
             grep "version" package.json
             git tag -l
+            git ls-remote --tags
             pnpm version patch -m "[ci skip] Automated version bump to %s"
             git tag -l
+            git ls-remote --tags
       - name: Extract version
         uses: issue-ops/semver@v1.2.0
         id: extract-version
@@ -50,7 +52,4 @@ jobs:
       - name: Print version
         run: echo ${{ steps.extract-version.outputs.version }}
       - name: Release v${{ steps.extract-version.outputs.version }}
-        run: |
-          git tag -a v${{ steps.extract-version.outputs.version }} -m "Release v${{ steps.extract-version.outputs.version }}"
-          git push origin v${{ steps.extract-version.outputs.version }}
-          gh release create v${{ steps.extract-version.outputs.version }} -t v${{ steps.extract-version.outputs.version }} -n "Release v${{ steps.extract-version.outputs.version }}"
+        run: gh release create v${{ steps.extract-version.outputs.version }} -t v${{ steps.extract-version.outputs.version }} -n "Release v${{ steps.extract-version.outputs.version }}"
