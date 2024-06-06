@@ -36,7 +36,9 @@ jobs:
           git config user.name "${{ github.event.head_commit.committer.name }}"
           git config user.email "${{ github.event.head_commit.committer.email }}"
       - name: Bump version
-        run: pnpm version patch -m "[ci skip] Automated version bump to %s"
+        run: |
+            grep "version" package.json
+            pnpm version patch -m "[ci skip] Automated version bump to %s"
       - name: Extract version
         uses: issue-ops/semver@v1.2.0
         id: extract-version
@@ -45,7 +47,7 @@ jobs:
           overwrite: true
       - name: Print version
         run: echo ${{ steps.extract-version.outputs.version }}
-      - name: Push changes
+      - name: Release v${{ steps.extract-version.outputs.version }}
         uses: softprops/action-gh-release@v2
         with:
           files: package.json
