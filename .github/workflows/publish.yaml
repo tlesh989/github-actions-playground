@@ -1,9 +1,9 @@
 name: Publish
 
-on:
+on: 
   push:
     branches:
-      - dev
+      - 'dev'
 
 jobs:
   publish:
@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -30,7 +32,14 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Configure git
         run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
-      - name: Run release-it
-        run: pnpm release
+          git config user.name "${{ github.event.head_commit.committer.name }}"
+          git config user.email "${{ github.event.head_commit.committer.email }}"
+      - name: Bump version
+        run: pnpm version patch -m "[ci skip] Automated version bump to %s"
+      - name: Extract version
+        uses: issue-ops/semver@v1.2.0
+        id: extract-version
+        with:
+          manifest-path: package.json
+      - name: Print version
+        run: echo ${{ steps.extract-version.outputs.version }}
