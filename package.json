@@ -8,7 +8,7 @@
     "test": "jest",
     "lint": "eslint .",
     "build": "tsc --noEmit",
-    "release": "release-it --ci"
+    "release": "release-it --ci -VV"
   },
   "lint-staged": {
     "*.ts": [

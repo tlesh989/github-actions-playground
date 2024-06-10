@@ -40,7 +40,8 @@ jobs:
             grep "version" package.json
             git tag -l
             git ls-remote --tags
-            pnpm version patch -m "[ci skip] Automated version bump to %s"
+            pnpm release
+            # pnpm version patch -m "[ci skip] Automated version bump to %s"
             git tag -l
             git ls-remote --tags
       - name: Extract version
@@ -52,4 +53,5 @@ jobs:
       - name: Print version
         run: echo ${{ steps.extract-version.outputs.version }}
       - name: Release v${{ steps.extract-version.outputs.version }}
-        run: gh release create v${{ steps.extract-version.outputs.version }} -t v${{ steps.extract-version.outputs.version }} -n "Release v${{ steps.extract-version.outputs.version }}"
+        # run: gh release create v${{ steps.extract-version.outputs.version }} -t v${{ steps.extract-version.outputs.version }} -n "Release v${{ steps.extract-version.outputs.version }}"
+        run: git status && gh status
