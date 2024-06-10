@@ -7,7 +7,7 @@
     "tag": true,
     "push": true,
     "pushArgs": ["--no-verify"],
-    "commitMessage": "[CircleCI] Updated to ${version} [ci skip]",
+    "commitMessage": "[automated] Updated to ${version} [ci skip]",
     "tagName": "v${version}",
     "tagAnnotation": "Release ${version}"
   },
