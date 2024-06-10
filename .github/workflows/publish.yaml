@@ -43,7 +43,7 @@ jobs:
             # pnpm version patch -m "[ci skip] Automated version bump to %s"
             
       - name: Release
-        run: npx release-it --verbose
+        run: npm release-it
       - name: git status
         run: |
           git status
@@ -57,6 +57,6 @@ jobs:
           overwrite: true
       - name: Print version
         run: echo ${{ steps.extract-version.outputs.version }}
-      - name: Release v${{ steps.extract-version.outputs.version }}
+      - name: Check status for v${{ steps.extract-version.outputs.version }}
         # run: gh release create v${{ steps.extract-version.outputs.version }} -t v${{ steps.extract-version.outputs.version }} -n "Release v${{ steps.extract-version.outputs.version }}"
-        run: git status && gh status
+        run: git status
