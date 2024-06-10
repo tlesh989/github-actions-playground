@@ -43,7 +43,7 @@ jobs:
             # pnpm version patch -m "[ci skip] Automated version bump to %s"
             
       - name: Release
-        run: npm release-it
+        run: npm run release-it
       - name: git status
         run: |
           git status
