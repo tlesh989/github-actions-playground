@@ -39,9 +39,7 @@ jobs:
         run: |
             grep "version" package.json
             git tag -l
-            git ls-remote --tags
-            # pnpm version patch -m "[ci skip] Automated version bump to %s"
-            
+            git ls-remote --tags            
       - name: Release
         run: pnpm release
       - name: git status
